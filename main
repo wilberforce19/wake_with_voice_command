@@ -1,0 +1,92 @@
+package com.example.ramkumar.voicetest;
+
+import android.content.Intent;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+
+    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+    SpeechRecognizer recognizer;
+    RecognitionListener listener = new RecognitionListener() {
+        @Override
+        public void onResults(Bundle results) {
+            ArrayList<String> voiceResults = results
+                    .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            if (voiceResults == null) {
+                Log.e("CFlow", "No voice results");
+            } else {
+                Log.d("CFlow", "Printing matches: ");
+                for (String match : voiceResults) {
+                    Log.d("CFlow", match);
+                }
+            }
+        }
+
+        @Override
+        public void onReadyForSpeech(Bundle params) {
+            Log.d("CFlow", "Ready for speech");
+        }
+
+        @Override
+        public void onError(int error) {
+            Log.d("CFlow", "Error listening for speech: " + error);
+        }
+
+        @Override
+        public void onBeginningOfSpeech() {
+            Log.d("CFlow", "Speech starting");
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onEvent(int eventType, Bundle params) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onPartialResults(Bundle partialResults) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onRmsChanged(float rmsdB) {
+            // TODO Auto-generated method stub
+
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        recognizer = SpeechRecognizer.createSpeechRecognizer(this.getApplicationContext());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        //intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.domain.app");
+    }
+
+    public void Start (View v) {
+        recognizer.setRecognitionListener(listener);
+        recognizer.startListening(intent);
+    }
+}
