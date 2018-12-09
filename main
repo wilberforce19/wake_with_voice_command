@@ -20,12 +20,13 @@ public class MainActivity extends AppCompatActivity {
         public void onResults(Bundle results) {
             ArrayList<String> voiceResults = results
                     .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            if (voiceResults == null) {
-                Log.e("CFlow", "No voice results");
-            } else {
-                Log.d("CFlow", "Printing matches: ");
+            Log.d("CFlow", "Printing matches: ");
+            if (voiceResults != null) {
                 for (String match : voiceResults) {
                     Log.d("CFlow", match);
+                    if (match.equals("awake")) {
+                        Log.d("CFlow", "I heard 'Awake'!");
+                    }
                 }
             }
         }
