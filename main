@@ -1,6 +1,7 @@
 package com.example.ramkumar.voicetest;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -20,12 +21,21 @@ public class MainActivity extends AppCompatActivity {
         public void onResults(Bundle results) {
             ArrayList<String> voiceResults = results
                     .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            if (voiceResults == null) {
-                Log.e("CFlow", "No voice results");
-            } else {
-                Log.d("CFlow", "Printing matches: ");
+            Log.d("CFlow", "Printing matches: ");
+            if (voiceResults != null) {
                 for (String match : voiceResults) {
                     Log.d("CFlow", match);
+                    if (match.equals("a 2010")) {
+                        Log.d("CFlow", "I heard my name!");
+                        MediaPlayer mp = new MediaPlayer();
+                        try {
+                            mp.setDataSource("/storage/sdcard0/Hello.3gpp");
+                            mp.prepare();
+                            mp.start();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }
